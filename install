@@ -2,9 +2,8 @@
 
 cd $HOME
 
-
 repo_url=$(/usr/bin/git --git-dir=$HOME/.dotfiles/.git remote get-url origin)
-git clone $repo_url --bare $HOME/.dotfiles/repo
+git clone $repo_url --bare $HOME/.dotfiles/repo -b dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/repo --work-tree=$HOME'
 
 touch /home/$USERNAME/.persistent/.z && ln -s /home/$USERNAME/.persistent/.z /home/$USERNAME/.z
