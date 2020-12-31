@@ -1,0 +1,9 @@
+[submodule ".oh-my-zsh/custom/plugins/autoenv"]
+	path = .oh-my-zsh/custom/plugins/autoenv
+	url = git@github.com:Tarrasch/zsh-autoenv.git
+[submodule ".oh-my-zsh/custom/plugins/fzf-z"]
+	path = .oh-my-zsh/custom/plugins/fzf-z
+	url = git@github.com:andrewferrier/fzf-z.git
+[submodule ".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+	path = .oh-my-zsh/custom/plugins/zsh-autosuggestions
+	url = git@github.com:zsh-users/zsh-autosuggestions.git
