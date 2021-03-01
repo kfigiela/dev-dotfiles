@@ -1,0 +1,93 @@
+:set prompt "\ESC]1337;SetMark\BEL\STX\ESC[34m\STXλ > \ESC[m\STX"
+
+
+-- Show the types of evaluated expressions
+:set +t
+
+-- And stats
+-- :set +s
+
+-- Enable multi-line expressions with :{ and :}
+-- :set +m
+
+-- :set -fobject-code
+:set -O0
+
+
+:def hub (\args -> pure  $ ":! hub " ++ args)
+:def git (\args -> pure  $ ":! git " ++ args)
+:def gss (\_ -> pure ":! git status --short ")
+:def - (\args -> pure $ ":! " ++ args)
+
+:def! si const $ return $ ":show imports"
+
+:def! mscript (\args -> pure (":script ~/restaumatic/ghci/" ++ args ++ ".ghci"))
+
+let clearITerm2Scrollback = "Prelude.putStr \"\\x1b]1337;ClearScrollback\\x7\""
+
+:{
+:def! tc (\_args -> return $ unlines
+    [ clearITerm2Scrollback
+    , "Prelude.putStrLn \"Reloading code\""
+    , ":r"
+    , ":postc"
+    ])
+:}
+
+:def! atc (\args -> Prelude.return (":def! postc (\\_ -> Prelude.return (" ++ show args ++ " ++ \"\\n\"))"))
+
+:{
+  :def! postc (\_ -> Prelude.return [])
+:}
+
+:{
+:def! fork (\s ->
+  let (slot, code) = Data.List.span (\c -> case c of
+          '_' -> True
+          ' ' -> False
+          '\n' -> False
+          _ -> if Data.Char.isAlphaNum c
+                  then True
+                  else GHC.Base.error "Slot name must contain alpha, numbers and '_' only. Usage :fork slotName putStrLn \"Hello World\"") s
+  in Control.Monad.return $ Data.String.unlines
+    [":{"
+    ,"System.Environment.lookupEnv \"GHCI_FORK_" Data.Monoid.<> slot Data.Monoid.<> "\" Control.Monad.>>="
+    ,"(\\s ->"
+    ,"  ( case s Control.Monad.>>= Text.Read.readMaybe of"
+    ,"      Data.Maybe.Just n ->"
+    ,"        let sPtr = Foreign.StablePtr.castPtrToStablePtr (Foreign.Ptr.wordPtrToPtr n)"
+    ,"        in  Foreign.StablePtr.deRefStablePtr sPtr Control.Monad.>>="
+    ,"            (\\(t, running) -> Control.Concurrent.killThread t Control.Monad.>>"
+    ,"            Foreign.StablePtr.freeStablePtr sPtr Control.Monad.>>"
+    ,"            Control.Monad.return running)"
+    ,"      Data.Maybe.Nothing -> Control.Concurrent.newEmptyMVar"
+    ,"  ) Control.Monad.>>="
+    ,"(\\running -> Control.Concurrent.newEmptyMVar Control.Monad.>>="
+    ,"(\\sPtrSet -> Control.Concurrent.forkFinally"
+    ,"  ( Control.Concurrent.takeMVar sPtrSet Control.Monad.>>"
+    ,"    Control.Concurrent.putMVar running () Control.Monad.>>"
+    ,"    ("
+    ,     Data.List.drop 1 code
+    ,"    )"
+    ,"  ) (\\_ -> Control.Concurrent.takeMVar running) Control.Monad.>>="
+    ,"(\\t -> Foreign.StablePtr.newStablePtr (t, running) Control.Monad.>>="
+    ,"(\\sPtr -> System.Environment.setEnv \"GHCI_FORK_" Data.Monoid.<> slot Data.Monoid.<> "\" (GHC.Show.show"
+    ,"  (Foreign.Ptr.ptrToWordPtr (Foreign.StablePtr.castStablePtrToPtr sPtr))) Control.Monad.>>"
+    ,"Control.Concurrent.putMVar sPtrSet ())))))"
+    ,":}"
+    ])
+:}
+
+:def! dash (\args -> pure  $ ":! open dash://hs:" ++ args)
+:def! stylish-all (\_ -> pure  $ ":! fd -0 \".hs$\" | xargs -0 -n1 -t stylish-haskell -i")
+:def! stylish-modified (\_ -> pure  $ ":! git diff --relative --name-only --cached | xargs -n1 -t stylish-haskell -i")
+
+
+:{
+:def! re (\args -> return $ unlines
+    [ clearITerm2Scrollback
+    , "Prelude.putStrLn \"Reloading code\""
+    , ":r"
+    , args
+    ])
+:}
