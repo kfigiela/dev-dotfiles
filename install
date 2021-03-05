@@ -9,6 +9,8 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/repo --work-tree=$HOME'
 touch /home/$USERNAME/.persistent/.z && ln -s /home/$USERNAME/.persistent/.z /home/$USERNAME/.z
 mkdir -p /home/$USERNAME/.persistent/.local
 mkdir -p /home/$USERNAME/.persistent/.config
+mkdir -p /home/$USERNAME/.persistent/.docker
+ln -fs /home/$USERNAME/.persistent/.docker /home/$USERNAME/.docker
 
 mkdir -p .config-backup && dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
 
@@ -25,6 +27,7 @@ sudo mv exa-linux-x86_64 /usr/local/bin/exa
 curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | SHELL=zsh zsh
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository https://cli.github.com/packages
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update
