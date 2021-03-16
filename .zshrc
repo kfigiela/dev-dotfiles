@@ -53,3 +53,4 @@ alias overlay="/usr/bin/git --git-dir=/workspace/restaumatic-overlay --work-tree
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+export ZSH_THEME_TERM_TITLE_IDLE=%~
