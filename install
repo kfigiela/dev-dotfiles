@@ -12,6 +12,8 @@ mkdir -p /home/$USERNAME/.persistent/.config
 mkdir -p /home/$USERNAME/.persistent/.docker
 ln -fs /home/$USERNAME/.persistent/.docker /home/$USERNAME/.docker
 
+[ -d /home/$USERNAME/.oh-my-zsh ] && echo "oh-my-zsh is already there" || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 mkdir -p .config-backup && dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
 
 dotfiles checkout
