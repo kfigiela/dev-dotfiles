@@ -2,7 +2,7 @@
 
 
 -- Show the types of evaluated expressions
-:set +t
+-- :set +t
 
 -- And stats
 -- :set +s
@@ -23,12 +23,10 @@
 
 :def! mscript (\args -> pure (":script ~/restaumatic/ghci/" ++ args ++ ".ghci"))
 
-let clearITerm2Scrollback = "Prelude.putStr \"\\x1b]1337;ClearScrollback\\x7\""
 
 :{
 :def! tc (\_args -> return $ unlines
-    [ clearITerm2Scrollback
-    , "Prelude.putStrLn \"Reloading code\""
+    [ "Prelude.putStrLn \"Reloading code\""
     , ":r"
     , ":postc"
     ])
