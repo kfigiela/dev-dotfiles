@@ -1,13 +1,13 @@
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 export ZSH="/home/$(whoami)/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 COMPLETION_WAITING_DOTS="true"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 DEFAULT_USER=$USER
 
-plugins=(git node autoenv stack z fzf-z zsh-autosuggestions)
+plugins=(git node autoenv stack z fzf-z zsh-autosuggestions direnv terraform)
 source $ZSH/oh-my-zsh.sh
 
 prompt_context(){}

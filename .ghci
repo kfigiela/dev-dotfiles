@@ -83,8 +83,7 @@
 
 :{
 :def! re (\args -> return $ unlines
-    [ clearITerm2Scrollback
-    , "Prelude.putStrLn \"Reloading code\""
+    [ "Prelude.putStrLn \"Reloading code\""
     , ":r"
     , args
     ])
