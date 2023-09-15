@@ -7,7 +7,7 @@ COMPLETION_WAITING_DOTS="true"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 DEFAULT_USER=$USER
 
-plugins=(git node autoenv stack z fzf-z zsh-autosuggestions direnv terraform)
+plugins=(git node autoenv stack z fzf-z zsh-autosuggestions direnv terraform nix-zsh-completions aws)
 source $ZSH/oh-my-zsh.sh
 
 prompt_context(){}
@@ -28,8 +28,8 @@ setopt sharehistory      #Share history across terminals
 setopt incappendhistory  #Immediately append to the history file, not just when a term is killed
 HISTFILE=$HOME/.persistent/.zsh_history
 
-alias ls=exa
-alias ll="exa -l --git -g --header"
+alias ls=eza
+alias ll="eza -l --git -g --header"
 alias cls='echo -n "\\x1b]1337;ClearScrollback\\x7"'
 hash -d re=/workspace/restaumatic
 
@@ -41,6 +41,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='-e --border --color dark'
 export FZF_ALT_C_COMMAND="fd -t d"
 export FZFZ_SUBDIR_LIMIT=0
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'"
 
 # expose ssh-agent to other sessions (e.g. launched externally with docker exec)
 [[ -z "$SSH_AUTH_SOCK" ]] && source $HOME/.ssh_sock || echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > $HOME/.ssh_sock
