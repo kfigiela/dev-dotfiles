@@ -33,7 +33,6 @@ if (which eza > /dev/null); then
   alias ll="eza -l --git -g --header"
 fi
 alias cls='echo -n "\\x1b]1337;ClearScrollback\\x7"'
-hash -d re=/workspace/restaumatic
 
 [[ $- == *i* ]] && source "/usr/share/doc/fzf/examples/completion.zsh" 2> /dev/null
 
