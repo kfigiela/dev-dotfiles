@@ -28,14 +28,15 @@ setopt sharehistory      #Share history across terminals
 setopt incappendhistory  #Immediately append to the history file, not just when a term is killed
 HISTFILE=$HOME/.persistent/.zsh_history
 
-alias ls=eza
-alias ll="eza -l --git -g --header"
+if (which eza > /dev/null); then
+  alias ls=eza
+  alias ll="eza -l --git -g --header"
+fi
 alias cls='echo -n "\\x1b]1337;ClearScrollback\\x7"'
 hash -d re=/workspace/restaumatic
 
 [[ $- == *i* ]] && source "/usr/share/doc/fzf/examples/completion.zsh" 2> /dev/null
 
-source "/usr/share/doc/fzf/examples//key-bindings.zsh"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='-e --border --color dark'
